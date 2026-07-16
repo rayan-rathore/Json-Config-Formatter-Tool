@@ -1,7 +1,9 @@
 import json
+from config_loader import ConfigLoader
+
 class JSONEngine:
     def __init__(self):
-        pass
+        self.config = ConfigLoader()
 
 
     def validation(self, raw_text):
@@ -13,7 +15,7 @@ class JSONEngine:
 
 
     def modify(self, data_dict):
-         json_strings = json.dumps(data_dict, indent=4)
+         json_strings = json.dumps(data_dict, indent=self.config.indent_spaces)
          return json_strings
 
     def minify(self,data_dict):
