@@ -6,7 +6,7 @@ class JSONEngine:
         self.config = ConfigLoader()
 
 
-    def validation(self, raw_text):
+    def validate_json(self, raw_text):
         try:
             data = json.loads(raw_text)
             return data
@@ -14,10 +14,10 @@ class JSONEngine:
             return f"Error: {raw_text} contains invalid JSON formatting."
 
 
-    def modify(self, data_dict):
+    def format_json(self, data_dict):
          json_strings = json.dumps(data_dict, indent=self.config.indent_spaces)
          return json_strings
 
-    def minify(self,data_dict):
+    def compact_json(self,data_dict):
         comp_strings = json.dumps(data_dict, separators=(',',':'))
         return comp_strings

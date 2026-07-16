@@ -1,1 +1,227 @@
-{"app_name":"MySimpleApp","version":1.0,"settings":{"theme":"dark","auto_save":true}}
+{
+    "company": {
+        "name": "QuantumSoft Solutions",
+        "founded": 2018,
+        "active": true,
+        "website": "https://api.quantumsoft.dev",
+        "support_email": "support@quantumsoft.dev",
+        "headquarters": {
+            "country": "India",
+            "state": "Gujarat",
+            "city": "Surat",
+            "coordinates": {
+                "latitude": 21.1702,
+                "longitude": 72.8311
+            }
+        }
+    },
+
+    "application": {
+        "name": "Enterprise Dashboard",
+        "version": "3.2.8",
+        "build": 48923,
+        "release_date": "2026-07-16T09:15:21Z",
+        "debug": false,
+        "default_language": "en",
+        "supported_languages": [
+            "en",
+            "fr",
+            "de",
+            "es",
+            "hi",
+            "ja",
+            "zh"
+        ]
+    },
+
+    "database": {
+        "primary": {
+            "engine": "postgresql",
+            "host": "db-primary.internal",
+            "port": 5432,
+            "username": "admin",
+            "password": "REDACTED",
+            "pool": {
+                "min": 5,
+                "max": 30,
+                "timeout": 30
+            }
+        },
+        "replicas": [
+            {
+                "host": "db-replica-1.internal",
+                "priority": 1
+            },
+            {
+                "host": "db-replica-2.internal",
+                "priority": 2
+            },
+            {
+                "host": "db-replica-3.internal",
+                "priority": 3
+            }
+        ]
+    },
+
+    "users": [
+        {
+            "id": 1001,
+            "username": "alice",
+            "roles": [
+                "admin",
+                "developer"
+            ],
+            "profile": {
+                "name": "Alice Johnson",
+                "email": "alice@example.com",
+                "verified": true,
+                "login_history": [
+                    {
+                        "timestamp": "2026-07-10T09:14:22Z",
+                        "ip": "192.168.1.15"
+                    },
+                    {
+                        "timestamp": "2026-07-12T17:55:11Z",
+                        "ip": "192.168.1.19"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 1002,
+            "username": "bob",
+            "roles": [
+                "manager"
+            ],
+            "profile": {
+                "name": "Bob Smith",
+                "email": "bob@example.com",
+                "verified": false,
+                "login_history": []
+            }
+        }
+    ],
+
+    "permissions": {
+        "admin": {
+            "users": {
+                "create": true,
+                "delete": true,
+                "update": true,
+                "view": true
+            },
+            "system": {
+                "restart": true,
+                "shutdown": true
+            }
+        },
+        "developer": {
+            "repository": {
+                "clone": true,
+                "push": true,
+                "merge": false
+            }
+        }
+    },
+
+    "features": {
+        "authentication": true,
+        "notifications": true,
+        "dark_mode": true,
+        "beta_features": false,
+        "experimental": {
+            "ai_assistant": true,
+            "voice_commands": false,
+            "predictive_search": true
+        }
+    },
+
+    "servers": [
+        {
+            "region": "Asia",
+            "country": "India",
+            "status": "online",
+            "uptime": 99.999
+        },
+        {
+            "region": "Europe",
+            "country": "Germany",
+            "status": "maintenance",
+            "uptime": 97.21
+        },
+        {
+            "region": "North America",
+            "country": "USA",
+            "status": "online",
+            "uptime": 99.91
+        }
+    ],
+
+    "analytics": {
+        "daily_users": 193482,
+        "monthly_users": 2839452,
+        "conversion_rate": 0.0871,
+        "retention": {
+            "day_1": 0.81,
+            "day_7": 0.52,
+            "day_30": 0.28
+        }
+    },
+
+    "mixed_array": [
+        42,
+        true,
+        false,
+        null,
+        3.1415926535,
+        -42,
+        6.022e23,
+        "Hello World",
+        {
+            "nested": [
+                {
+                    "deep": [
+                        {
+                            "deeper": [
+                                {
+                                    "deepest": {
+                                        "answer": 42,
+                                        "unicode": "こんにちは",
+                                        "emoji": "🚀🔥🎯",
+                                        "escaped": "Line1\nLine2\nTab\tEnd",
+                                        "url": "https://example.com/api/v1/users?id=100",
+                                        "empty_array": [],
+                                        "empty_object": {},
+                                        "null_value": null
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+
+    "logging": {
+        "level": "INFO",
+        "rotation": {
+            "enabled": true,
+            "max_size_mb": 50,
+            "backups": 10
+        },
+        "outputs": [
+            "console",
+            "file",
+            "remote"
+        ]
+    },
+
+    "metadata": {
+        "created_by": "System",
+        "created_at": "2026-07-16T12:30:45Z",
+        "last_updated": "2026-07-20T08:00:00Z",
+        "checksum": "8e12cf991a18bcb012af91827364bdde",
+        "notes": "This JSON document intentionally contains a wide variety of data types and structures for testing formatter, validator, statistics, depth analysis, sorting, searching and traversal algorithms."
+    }
+}
