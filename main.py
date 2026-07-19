@@ -1,14 +1,13 @@
+# Application controller
+
 import sys
-from formatter import JSONEngine
+from core.engine import JSONEngine
 import json
 import argparse
 
 def main():
 
-    parser = argparse.ArgumentParser(description="JSON Configuration and Formatter Tool")
-    parser.add_argument("filepath", help="The path to the JSON file you want to read")
-    parser.add_argument("--mode",choices=["pretty","minify"],required=False,
-                        help="Choose the output formatting style")
+
 
     args = parser.parse_args()
 

@@ -1,3 +1,5 @@
+# Defensive configuration system manager
+
 import json
 
 
