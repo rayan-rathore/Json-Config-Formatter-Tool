@@ -103,21 +103,31 @@ def main():
                 print(f"Comparison aborted. failed to process comparative file: {e}")
 
     # Execute Formatting and Output Results
-
-    active_mode = args.mode
-    if active_mode is None:
-        active_mode = engine.config.default_mode
     if args.backup:
         storage.create_backup_file(args.filepath)
-    
+        #print(f"[BACKUP] Creating safety backup file for: {args.filepath}
+
+    active_mode = args.mode
+
+    if active_mode is None:
+        active_mode = engine.config.default_mode
+
     if active_mode == "pretty":
-        result = engine.format_json(data)
-        print(result)
+        formatted_content = engine.format_json(data_dict,args.sort_keys)
+
     elif active_mode == "minify":
-        result = engine.compact_json(data)
-        print(result)
+        formatted_content = engine.compact_json(data_dict,args.sort_keys)
+
     else:
         print(f"[ERROR] Unknown mode '{active_mode}' encountered.")
+
+    result = storage.save_result(
+        original_path = args.filepath,
+        output_path= args.output,
+        in_place=args.in_place,
+        content=formatted_content
+    )
+    print("[SUCCESS] Formatting and output routine executed cleanly.")
 
 if __name__ == "__main__":
     main()
