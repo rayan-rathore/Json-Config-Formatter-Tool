@@ -10,6 +10,8 @@ class ParserCLI:
         #group for file input and targets
         file_group = parser.add_argument_group("File inputs and Targets")
         file_group.add_argument("filepath", help="The JSON target file.")
+        file_group.add_argument("--diff_file", type=str, help="Path to second JSON file to"
+                                                              "run structural comparison.")
         file_group.add_argument("--output", help="Takes a string path to save results.")
         file_group.add_argument("--in-place", action="store_true",
                                 help="True/False flag For over-writing the original file.")
