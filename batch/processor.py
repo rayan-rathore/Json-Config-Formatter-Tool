@@ -27,12 +27,12 @@ class BatchProcessor:
             for filename in files:
                 full_filename_path = None
                 if filename.endswith(".json"):
-                    full_filename_path = os.path.join(root, filename)
+                    full_filename_path = os.path.join(str(root), str(filename))
 
                     try:
                         if full_filename_path and os.path.exists(full_filename_path):
-                        with open(full_filename_path, "r", encoding="utf-8") as file:
-                            text = file.read()
+                            with open(full_filename_path, "r", encoding="utf-8") as file:
+                                text = file.read()
 
                         data = self.formatter_engine.validate_json(text)
 
