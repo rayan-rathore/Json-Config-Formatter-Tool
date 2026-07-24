@@ -3,10 +3,9 @@
 input from your argument parser, check what features were requested, and delegate the work
 straight to your independent package managers."""
 import sys
-import json
 import os
-import argparse
-from cli.parser import ParserCLI
+
+from cli.parser import get_inspector_parser
 from core.engine import JSONEngine
 from storage.file_manager import StorageManager
 from analyzer.tree_view import JSONTreeGenerator
@@ -18,7 +17,7 @@ from batch.processor import BatchProcessor
 
 def main():
 
-    args = ParserCLI.get_inspector_parser().parse_args()
+    args = get_inspector_parser().parse_args()
     engine = JSONEngine()
     storage = StorageManager()
 
@@ -33,33 +32,42 @@ def main():
         print(f"[ERROR]: The targeted file '{args.filepath}'does not exist on disk.")
         sys.exit()
     try:
-        with open(args.filepath, "r", encoding="uft-8") as file:
+        with open(args.filepath, "r", encoding="utf-8") as file:
             raw_text = file.read()
             print(raw_text)
     except Exception as e:
-        print(f"[ERROR]: {e}")
+        print(f"[ERROR]: Failed to read file: {e}")
+        sys.exit()
 
     # Intercept validation checks
     validator = JSONValidator()
     valid,error = validator.check_duplicate_keys(raw_text)
     if not valid:
         print(f"Validation failed! Reason: {error}")
-        return
+        sys.exit()
+
+    # Parse the verified clean string into a working Python data dictionary
+    data_dict = engine.validate_json(raw_text)
 
     # Process Analytical Options (Stats / Tree)
-    data_dict = engine.validate_json(raw_text)
     if args.stats:
         analyzer = JSONAnalyzer()
-        status_log = analyzer.traverse_explorer(data_dict)
+        status_log = analyzer.analyze_structure(data_dict)
         print("\n--- Structural Statistics Log ---")
-        print(status_log)
-    elif args.tree:
+        for key,value in status_log.items():
+            print(f"{key.replace('_',' ').title()}: {value}")
+
+    if args.tree:
         tree_gen = JSONTreeGenerator()
         print("\n--- Visual Tree Layout ---")
         tree_gen.generate_tree(data_dict)
 
     # Process Query Engine Options (Search Key / Value)
     searcher = JSONSearcher()
+    # Safely hooked into argparse parameters to support smart research comparator
+    if hasattr(args, "search_key") and args.search_key is None and args.search_value is None:
+        pass
+
     if args.search_key:
         key_matches = searcher.search_key(data_dict,args.search_key)
         print(f"\n--- Search key results for '{args.search_key}'")
@@ -68,17 +76,27 @@ def main():
                 print(path)
         else:
             print(f"No matching path found for {args.search_key}.")
-    elif args.search_value:
-        value_matches =  searcher.search_value(data_dict,args.search_value)
+        sys.exit()
+
+    if args.search_value:
+        # A quick string conversion guard to ensure safe data matching inputs
+        target_value = args.search_value
+        if target_value.lower() == "true": target_value = True
+        elif target_value.lower() == "false": target_value = False
+        elif target_value.isdigit(): target_value = int(target_value)
+
+        value_matches =  searcher.search_value(data_dict,target_value)
         print(f"\n--- Search value results for '{args.search_value}'")
         if value_matches:
             for path in value_matches:
                 print(path)
         else:
-            print(f"No matching path found {args.search_value}")
+            print(f"No matching path found {args.search_value}.")
+        sys.exit()
 
-    # Process Diff Comparator Operations
-    if args.diff_file:
+    # Process Difference Comparator Operations
+
+    if hasattr(args, "diff_file") and args.diff_file:
         print(f"\n--- Starting structural comparison against: {args.diff_file}.")
 
         if not os.path.isfile(args.diff_file):
@@ -99,16 +117,16 @@ def main():
                         print(diff)
                 else:
                     print("No mismatch found! The structure match perfectly.")
+                sys.exit()
             except Exception as e:
-                print(f"Comparison aborted. failed to process comparative file: {e}")
+                print(f"[ERROR]: Comparison aborted. failed to process comparative file: {e}")
+                sys.exit()
 
     # Execute Formatting and Output Results
     if args.backup:
         storage.create_backup_file(args.filepath)
-        #print(f"[BACKUP] Creating safety backup file for: {args.filepath}
 
     active_mode = args.mode
-
     if active_mode is None:
         active_mode = engine.config.default_mode
 
@@ -120,8 +138,9 @@ def main():
 
     else:
         print(f"[ERROR] Unknown mode '{active_mode}' encountered.")
+        sys.exit()
 
-    result = storage.save_result(
+    storage.save_result(
         original_path = args.filepath,
         output_path= args.output,
         in_place=args.in_place,
