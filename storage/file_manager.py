@@ -32,9 +32,8 @@ class StorageManager:
     def save_result(self, original_path, output_path, in_place, content):
         #if "output_path" is provided by user: save one on output by using action 2
         if output_path is not None:
-            if in_place is True:
-                print(f"[INFO] Both --output and --in-place provided. Saving safely to separate path ")
-                self.write_to_file(output_path,content)
+            print(f"[INFO] Both --output and --in-place provided. Saving safely to separate path ")
+            self.write_to_file(output_path,content)
 
         #In-place only if no safe separate output path was requested
         elif in_place is True:

@@ -30,6 +30,7 @@ def get_inspector_parser():
                         help="True/False flag to count objects, keys, values and max depth")
     analysis_group.add_argument("--tree", action="store_true",
                         help="True/False flag to show visual structural branch view")
+    analysis_group.add_argument("--schema",help="Path to a JSON schema file to validate against")
     analysis_group.add_argument("--search-key",
                         help="Takes a search string for matching keys")
     analysis_group.add_argument("--search-value",
