@@ -49,6 +49,10 @@ def main():
     # Parse the verified clean string into a working Python data dictionary
     data_dict = engine.validate_json(raw_text)
 
+    if hasattr(args, "schema") and args.schema:
+        if not os.path.isfile(args.schema):
+            validator.validate_schema(data_dict,schema_dict)
+
     # Process Analytical Options (Stats / Tree)
     if args.stats:
         analyzer = JSONAnalyzer()
@@ -64,9 +68,6 @@ def main():
 
     # Process Query Engine Options (Search Key / Value)
     searcher = JSONSearcher()
-    # Safely hooked into argparse parameters to support smart research comparator
-    if hasattr(args, "search_key") and args.search_key is None and args.search_value is None:
-        pass
 
     if args.search_key:
         key_matches = searcher.search_key(data_dict,args.search_key)
