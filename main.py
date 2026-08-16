@@ -2,8 +2,10 @@
 """main.py will not contain any complex logic algorithms. Its only job is to receive user
 input from your argument parser, check what features were requested, and delegate the work
 straight to your independent package managers."""
+import json
 import sys
 import os
+from encodings import utf_8
 
 from cli.parser import get_inspector_parser
 from core.engine import JSONEngine
@@ -51,7 +53,28 @@ def main():
 
     if hasattr(args, "schema") and args.schema:
         if not os.path.isfile(args.schema):
-            validator.validate_schema(data_dict,schema_dict)
+            print(f"ERROR: {args.schema} file does not exist in the disk.")
+            sys.exit()
+        else:
+            try:
+                with open(args.schema , "r", encoding="utf_8") as file:
+                    n_file = file.read()
+
+                    data_dict_b = engine.validate_json(n_file)
+
+                    valid, error = validator.validate_schema(data_dict, data_dict_b)
+                    if not valid:
+                        print(f"validation failed! Reason: {error}")
+                        sys.exit()
+                    else:
+                        print(f"success: {error}")
+                        sys.exit()
+
+            except Exception as e:
+                print(f"Schema validation failed. Reason: {e}")
+                sys.exit()
+
+
 
     # Process Analytical Options (Stats / Tree)
     if args.stats:
