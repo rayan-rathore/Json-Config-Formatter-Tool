@@ -51,6 +51,7 @@ def main():
     # Parse the verified clean string into a working Python data dictionary
     data_dict = engine.validate_json(raw_text)
 
+    #Schema Validation: Verifying that a JSON file matches a blueprint dictionary containing required fields.
     if hasattr(args, "schema") and args.schema:
         if not os.path.isfile(args.schema):
             print(f"ERROR: {args.schema} file does not exist in the disk.")
