@@ -22,20 +22,24 @@ def test_validate_json_checks_for_invalid_formatting(engine):
 def test_format_json_checks_for_formatting(engine):
     data = {"a": 1, "b": 2}
     result = engine.format_json(data,sort_keys=False)
-    expected = """{
-                    "a": 1,
-                    "b": 2
-                    }"""
+    expected = (
+        "{\n"
+        "        \"a\": 1,\n"
+        "        \"b\": 2\n"
+        "}"
+    )
     assert result == expected
 
 def test_format_json_checks_for_sort_keys_on(engine):
     data = {"c": 3, "b": 2, "a": 1}
     result = engine.format_json(data,sort_keys=True)
-    expected = """{
-                    "a": 1,
-                    "b": 2,
-                    "c": 3
-                    }"""
+    expected = (
+        "{\n"
+        "        \"a\": 1,\n"
+        "        \"b\": 2,\n"
+        "        \"c\": 3\n"
+        "}"
+    )
     assert result == expected
 
 def test_compact_json_checks_for_compacting(engine):
