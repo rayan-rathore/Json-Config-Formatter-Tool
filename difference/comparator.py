@@ -80,7 +80,7 @@ class JSONComparator:
                             # Recurse deeper!
                             differences += self._diff_tracker(item_a,item_b,fresh_path)
                         else:
-                            diff_str = f"[CHANGED] Value mismatch at: {pretty_path}:{item_a} -> {item_b}"
+                            diff_str = f"[CHANGED] Value mismatch at: {pretty_path}: {item_a} -> {item_b}"
                             differences.append(diff_str)
 
         # Case C: Structure Mismatch (One is a dict, one is a list, or a primitive changed to an object)
